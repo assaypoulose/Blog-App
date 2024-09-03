@@ -54,7 +54,7 @@ export default function SignUp() {
             <span className='px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white'>Assay's</span>
             Blog
         </Link>
-        <p className='text-sm mt-5'>Welcome to Assay's Blog. Wanna get to know more about tech world? Signup with your emal and password or with Google.</p>
+        <p className='text-sm mt-5 text-justify'>Welcome to Assay's Blog. Wanna get to know more about tech world? Signup with your emal and password or with Google.</p>
         </div>
 
         {/* right */}
