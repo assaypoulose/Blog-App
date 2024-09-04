@@ -27,6 +27,7 @@ const navigate = useNavigate();
             })
             const data = await res.json();
             if(res.ok){
+                //console.log(data);
                 dispatch(signInSucess(data))
                 navigate('/');
             }
