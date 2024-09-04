@@ -1,28 +1,18 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/userModel.js");
+import jwt from 'jsonwebtoken';
+import { errorHandler } from "../utils/error.js";
+
 
 // Middleware to check if the user is authenticated
-exports.isAuthenticated = async (req, res, next) => {
-  try {
-    const token = req.header("Authorization").replace("Bearer ", "");
-
-    if (!token) {
-      return res.status(401).json({ message: "No token, authorization denied" });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    // Find the full user by ID from the decoded token
-    const user = await User.findById(decoded.id);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Attach the full user object to req.user
-    req.user = user;
-
-    next();
-  } catch (error) {
-    res.status(401).json({ message: "Token is not valid" });
+export const verifyToken = (req, res, next) => {
+  const token = req.cookies.access_token;
+  if(!token) {
+    return next(errorHandler(401, 'Unauthorized'));
   }
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if(err) {
+      return next(errorHandler(401, 'Unauthorized'));
+    }
+    req.user = user;
+    next();
+  });
 };
