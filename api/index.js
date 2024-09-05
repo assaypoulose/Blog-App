@@ -5,6 +5,7 @@ import userRoutes from "./routes/userRoute.js";
 import postRoutes from './routes/postRoute.js';
 import {errorHandlingMiddleware} from './middleware/errorHandling.js';
 import cookieParser from 'cookie-parser';
+import commentRoute from './routes/commentRoute.js';
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.get("/", (req, res) => {
 //api routing
 app.use("/api/user", userRoutes);
 app.use("/api/post", postRoutes);
+app.use("/api/comment", commentRoute);
 
 // Use the error-handling middleware
 app.use(errorHandlingMiddleware);
