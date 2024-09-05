@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRoutes from "./routes/userRoute.js";
+import postRoutes from './routes/postRoute.js';
 import {errorHandlingMiddleware} from './middleware/errorHandling.js';
 import cookieParser from 'cookie-parser';
 
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 
 //api routing
 app.use("/api/user", userRoutes);
+app.use("/api/post", postRoutes);
 
 // Use the error-handling middleware
 app.use(errorHandlingMiddleware);
