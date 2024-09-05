@@ -3,13 +3,39 @@ import { Alert, Button, Modal, TextInput, Textarea } from 'flowbite-react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
-export default function CommentSection({postId}) {
+export default function CommentSection({ postId }) {
 
     const {currentUser} = useSelector(state => state.user)
     const [comment, setComment] = useState('');
+    const [commentError, setCommentError] = useState(null);
+    const [comments, setComments] = useState([]);
 
     const handleSubmit = async (e) => {
-        
+        e.preventDefault();
+        if (comment.length > 200) {
+            return;
+          }
+          try {
+            const res = await fetch('/api/comment/create', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                content: comment,
+                postId,
+                userId: currentUser._id,
+              }),
+            });
+            const data = await res.json();
+            if (res.ok) {
+              setComment('');
+              setCommentError(null);
+              setComments([data, ...comments]);
+            }
+          } catch (error) {
+            setCommentError(error.message);
+          }
     }
 
   return (
@@ -46,6 +72,11 @@ export default function CommentSection({postId}) {
                                 Submit
                             </Button>
                         </div>
+                        {commentError && (
+            <Alert color='failure' className='mt-5'>
+              {commentError}
+            </Alert>
+          )}
                 </form>
             )}
         </div>
