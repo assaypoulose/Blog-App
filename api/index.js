@@ -28,10 +28,6 @@ app.listen(3000, () => {
 });
 
 
-app.get("/", (req, res) => {
-    res.json({ message: "API is working" });
-})
-
 //api routing
 app.use("/api/user", userRoutes);
 app.use("/api/post", postRoutes);
