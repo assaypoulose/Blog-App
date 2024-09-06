@@ -6,6 +6,7 @@ import postRoutes from './routes/postRoute.js';
 import {errorHandlingMiddleware} from './middleware/errorHandling.js';
 import cookieParser from 'cookie-parser';
 import commentRoute from './routes/commentRoute.js';
+import path from 'path';
 
 dotenv.config();
 
@@ -15,6 +16,8 @@ mongoose.connect(process.env.MONGO)
 }).catch(err => {
     console.log(err);
 });
+
+const __dirname = path.resolve();
 
 const app = express();
 app.use(express.json());
@@ -33,6 +36,12 @@ app.get("/", (req, res) => {
 app.use("/api/user", userRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/comment", commentRoute);
+
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+app.get('*',(req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+})
 
 // Use the error-handling middleware
 app.use(errorHandlingMiddleware);
